@@ -5,8 +5,6 @@
  */
 package hyperlink.integrity.checker;
 
-import java.util.regex.Pattern;
-
 /**
  *
  * @author hussein
@@ -39,19 +37,29 @@ public class MainFrame extends javax.swing.JFrame {
         urlTextField = new javax.swing.JTextField();
         checkButton = new javax.swing.JButton();
         errorMessageLabel = new javax.swing.JLabel();
+        loadingPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        setSize(new java.awt.Dimension(640, 383));
 
         backgroundPanel.setBackground(new java.awt.Color(245, 245, 245));
 
         cardPanel.setLayout(new java.awt.CardLayout());
 
+        homePanel.setBackground(new java.awt.Color(245, 245, 245));
+
         title.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        title.setForeground(new java.awt.Color(38, 38, 38));
         title.setText("Hyperlink integrity checker");
 
         urlLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        urlLabel.setForeground(new java.awt.Color(38, 38, 38));
         urlLabel.setText("Enter a url:");
 
+        urlTextField.setToolTipText("enter a valid url");
         urlTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 urlTextFieldKeyReleased(evt);
@@ -67,16 +75,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        errorMessageLabel.setForeground(new java.awt.Color(239, 68, 68));
+
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
         homePanelLayout.setHorizontalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
-                .addContainerGap(200, Short.MAX_VALUE)
-                .addComponent(title)
-                .addContainerGap(201, Short.MAX_VALUE))
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(homePanelLayout.createSequentialGroup()
@@ -84,26 +90,61 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(urlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE))))
+                            .addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(52, Short.MAX_VALUE))
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(title)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
                 .addComponent(title)
-                .addGap(38, 38, 38)
+                .addGap(77, 77, 77)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(urlLabel)
                     .addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorMessageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addGap(118, 118, 118))
         );
 
         cardPanel.add(homePanel, "card2");
+
+        loadingPanel.setBackground(new java.awt.Color(245, 245, 245));
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 16)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel1.setText("Please wait.");
+
+        javax.swing.GroupLayout loadingPanelLayout = new javax.swing.GroupLayout(loadingPanel);
+        loadingPanel.setLayout(loadingPanelLayout);
+        loadingPanelLayout.setHorizontalGroup(
+            loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loadingPanelLayout.createSequentialGroup()
+                .addGap(253, 253, 253)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadingPanelLayout.createSequentialGroup()
+                .addContainerGap(52, Short.MAX_VALUE)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48))
+        );
+        loadingPanelLayout.setVerticalGroup(
+            loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loadingPanelLayout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addComponent(jLabel1)
+                .addGap(41, 41, 41)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(217, Short.MAX_VALUE))
+        );
+
+        cardPanel.add(loadingPanel, "card3");
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -139,16 +180,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void urlTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_urlTextFieldKeyReleased
         url = urlTextField.getText();
-        if (url.isEmpty()) {
-            checkButton.setEnabled(false);
-        } else if (url.length() >= 10) { // checks when the user enters at least 10 characters
-            // Checks if it is a url using regex
-            // regex source: https://regexr.com/39nr7
-            String urlRegex = "[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
-            Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
-            boolean isValidUrl = pattern.matcher(url).find();
-
-            if (isValidUrl) {
+        errorMessageLabel.setText("");
+        checkButton.setEnabled(false);
+        if (!url.isEmpty() && url.length() >= 10) { // checks when the user enters at least 10 characters
+            if (Helpers.isValidUrl(url)) { // checks if it is a url
                 checkButton.setEnabled(true);
             } else {
                 errorMessageLabel.setText("Please enter a url");
@@ -157,7 +192,17 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_urlTextFieldKeyReleased
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
-        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker(url);
+
+//        cardPanel.removeAll();
+//        cardPanel.add(loadingPanel);
+//        this.setResizable(true);
+//        repaint();
+//        revalidate();
+//        this.setVisible(false);
+//        new LoadingScreen().setVisible(true);
+        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker(url, 5);
+        urlTextField.setText("");
+        this.dispose();
     }//GEN-LAST:event_checkButtonActionPerformed
 
     /**
@@ -188,10 +233,8 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainFrame().setVisible(true);
         });
     }
 
@@ -201,6 +244,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton checkButton;
     private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JPanel homePanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel loadingPanel;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel urlLabel;
     private javax.swing.JTextField urlTextField;
     // End of variables declaration//GEN-END:variables

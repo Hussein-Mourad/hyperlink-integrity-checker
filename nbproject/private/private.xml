@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/mnt/d/NetBeansProjects/hyperlink-integrity-checker/src/hyperlink/integrity/checker/HyperlinkIntegrityChecker.java</file>
+            <file>file:/mnt/d/NetBeansProjects/hyperlink-integrity-checker/src/hyperlink/integrity/checker/LinkIntegrityChecker.java</file>
+            <file>file:/mnt/d/NetBeansProjects/hyperlink-integrity-checker/src/hyperlink/integrity/checker/Helpers.java</file>
             <file>file:/mnt/d/NetBeansProjects/hyperlink-integrity-checker/src/hyperlink/integrity/checker/MainFrame.java</file>
+            <file>file:/mnt/d/NetBeansProjects/hyperlink-integrity-checker/src/hyperlink/integrity/checker/LoadingScreen.java</file>
         </group>
     </open-files>
 </project-private>
