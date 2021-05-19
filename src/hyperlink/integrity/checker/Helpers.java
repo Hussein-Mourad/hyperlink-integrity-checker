@@ -22,4 +22,17 @@ public class Helpers {
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         return pattern.matcher(url).find(); // return whatever the matcher returns true or false
     }
+
+    public static boolean isNumeric(String string) {
+        if (string == null || string.equals("")) {
+            return false;
+        }
+
+        try {
+            int value = Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+        }
+        return false;
+    }
 }

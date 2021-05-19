@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,147 +20,117 @@ import org.jsoup.select.Elements;
  */
 public class LinkIntegrityChecker {
 
-    private String url;
+    private String rootUrl;
     private int threshold;
-    private int depth = 0;
-    private ArrayList<String> urls = new ArrayList<>();
+    private ArrayList<String[]> urls = new ArrayList<>();
 
     public LinkIntegrityChecker(String url, int threshold) {
-        this.url = url;
+        this.rootUrl = url;
         this.threshold = threshold;
 
 //        try {
-//            URL u = new URL(url);
-//            System.out.println("Valid url");
+//            URL u = new URL(rootUrl);
+//            System.out.println("Valid rootUrl");
 //        } catch (MalformedURLException ex) {
-//            System.out.println("Invalid url");
+//            System.out.println("Invalid rootUrl");
 //            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        System.out.println(Thread.activeCount());
-        System.out.println(Runtime.getRuntime().availableProcessors());
-        checkLink(url);
+//        System.out.println(Thread.activeCount());
+//        System.out.println(Runtime.getRuntime().availableProcessors());
+        checkRootUrl(rootUrl);
     }
 
-    private void checkLink(String url) {
+    private void checkRootUrl(String url) {
         try {
-//            // if it is not a valid url appends the domain to the url as it can be a subdomain;
-//            if (!Helpers.isValidUrl(url)) {
-//                url = this.url + url;
-//            }
-
-            if (Helpers.isValidUrl(url)) {
-
-                Document doc = Jsoup.connect(url).get();
-                Elements anchorTags = doc.select("a[href]");
-                for (Element anchorTag : anchorTags) {
-                    String link = anchorTag.attributes().get("href");
-                    if (link.equals("#") || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
-                        continue;
-                    }
-
-                    if (!Helpers.isValidUrl(link)) {
-                        link = url + link;
-                    }
-
-                    try {
-                        URL urlTest = new URL(link);
-                        HttpURLConnection connection = (HttpURLConnection) urlTest.openConnection();
-                        connection.setRequestMethod("GET");
-                        connection.connect();
-
-                        int code = connection.getResponseCode();
-                        System.out.println("Code " + code + " " + link);
-
-                    } catch (IOException ex) {
-                        System.out.println("Invalid Link " + link);
-                    }
-                    if (depth++ == threshold) {
-                        checkLinks2(link);
-                    }
-
+            Document doc = Jsoup.connect(url).get();
+            Elements anchorTags = doc.select("a[href]");
+            for (Element anchorTag : anchorTags) {
+                String link = anchorTag.attributes().get("href");
+                if (link.equals("#") || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
+                    continue;
                 }
+                if (!Helpers.isValidUrl(link)) {
+                    link = url + link;
+                }
+                int depth = 0;
+                try {
+                    URL urlTest = new URL(link);
+                    HttpURLConnection connection = (HttpURLConnection) urlTest.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.connect();
 
-//                anchorTags.stream().map((anchorTag) -> anchorTag.attributes().get("href")).forEachOrdered((String newUrl) -> {
-//                    if (!newUrl.equals("#")) {
-//                        if (!Helpers.isValidUrl(newUrl) && !newUrl.equals("#")) {
-//                            newUrl = this.url + newUrl;
-//                        }
-//                        System.out.println(newUrls);
-////                    if (depth++ != threshold) {
-////                        checkLink(newUrl);
-////                    } else {
-////                        depth = 0;
-////                    }
-//                    }
-//                });
+                    int code = connection.getResponseCode();
+                    System.out.println("Code " + code + " " + "Depth " + depth + " " + link);
+                    if (threshold != 0) {
+                        checkLinks(link, depth);
+                    }
+
+                } catch (IOException ex) {
+                    System.out.println("Invalid Link " + link);
+                }
+//                    String[] item = {"Valid", link};
+//                    urls.add(item);
             }
         } catch (IOException ex) {
-            System.out.println("Invalid Link");
-            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Invalid Link " + url);
+        }
+
+    }
+
+    private void checkLinks(String url, int depth) {
+        if (depth == threshold) {
+            System.out.println("\n Returned at depth: " + depth + "\n");
+            return;
+        }
+        try {
+            Document doc = Jsoup.connect(url).get();
+            Elements anchorTags = doc.select("a[href]");
+            for (Element anchorTag : anchorTags) {
+                String link = anchorTag.attributes().get("href");
+
+                if (link.equals("#") || link.equals(rootUrl) || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
+                    continue;
+                }
+
+//                if (!Helpers.isValidUrl(link)) {
+//                    link = url + link;
+//                }
+                int code = getResCode(link);
+                System.out.println("Code " + code + " " + "Depth " + depth + " " + link);
+                checkLinks(link, depth + 1);
+            }
+        } catch (IOException ex) {
+            System.out.println("Invalid Link " + url);
         }
     }
 
-    private void checkLinks2(String url) {
+    private int getResCode(String url) {
         try {
-//            // if it is not a valid url appends the domain to the url as it can be a subdomain;
-//            if (!Helpers.isValidUrl(url)) {
-//                url = this.url + url;
-//            }
+            URL urlTest = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlTest.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            return connection.getResponseCode();
+        } catch (IOException | ClassCastException ex) {
+            return HttpURLConnection.HTTP_FORBIDDEN;
+        }
+    }
 
-            if (Helpers.isValidUrl(url)) {
-
-                Document doc = Jsoup.connect(url).get();
-                Elements anchorTags = doc.select("a[href]");
-                for (Element anchorTag : anchorTags) {
-                    String link = anchorTag.attributes().get("href");
-                    if (link.equals("#") || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
-                        continue;
-                    }
-
-                    if (!Helpers.isValidUrl(link)) {
-                        link = url + link;
-                    }
-
-                    try {
-                        URL urlTest = new URL(link);
-                        HttpURLConnection connection = (HttpURLConnection) urlTest.openConnection();
-                        connection.setRequestMethod("GET");
-                        connection.connect();
-
-                        int code = connection.getResponseCode();
-                        System.out.println("Code " + code + " " + link);
-
-                    } catch (IOException ex) {
-                        System.out.println("Invalid Link " + link);
-                    }
-
-                }
-
-//                anchorTags.stream().map((anchorTag) -> anchorTag.attributes().get("href")).forEachOrdered((String newUrl) -> {
-//                    if (!newUrl.equals("#")) {
-//                        if (!Helpers.isValidUrl(newUrl) && !newUrl.equals("#")) {
-//                            newUrl = this.url + newUrl;
-//                        }
-//                        System.out.println(newUrls);
-////                    if (depth++ != threshold) {
-////                        checkLink(newUrl);
-////                    } else {
-////                        depth = 0;
-////                    }
-//                    }
-//                });
-            }
+    private Elements getLinks(String url) {
+        try {
+            Document doc = Jsoup.connect(url).get();
+            Elements links = doc.select("a[href]");
+            return links;
         } catch (IOException ex) {
-            System.out.println("Invalid Link");
-            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
 //
-//    private Elements getLinks(String url) {
+//    private Elements getLinks(String rootUrl) {
 //        Elements anchorTags = null;
 //        try {
-//            Document doc = Jsoup.connect(url).get();
+//            Document doc = Jsoup.connect(rootUrl).get();
 //            anchorTags = doc.select("a[href]");
 //        } catch (IOException ex) {
 //
@@ -170,7 +138,7 @@ public class LinkIntegrityChecker {
 //        return anchorTags;
 //    }
 //    public static void main(String[] args) {
-//        LinkIntegrityChecker obj = new LinkIntegrityChecker(this.url);
+//        LinkIntegrityChecker obj = new LinkIntegrityChecker(this.rootUrl);
 //        Thread thread = new Thread(obj);
 //        thread.start();
 //        System.out.println("This code is outside of the thread");
