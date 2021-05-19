@@ -35,15 +35,39 @@ public class LinkIntegrityChecker {
 //            System.out.println("Invalid rootUrl");
 //            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-//        System.out.println(Thread.activeCount());
-//        System.out.println(Runtime.getRuntime().availableProcessors());
+        System.out.println(Thread.activeCount());
+        System.out.println(Runtime.getRuntime().availableProcessors());
         checkRootUrl(rootUrl);
+    }
+
+    public static void main(String[] args) {
+//        test();
+        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker("kddjfdkf", 0);
+    }
+
+    private static void test() {
+        for (int i = 0; i < 10; i++) {
+            int depth = 0;
+            System.out.println("Outerloop loop Depth: " + depth + " " + "i: " + i);
+            test2(depth);
+        }
+    }
+
+    private static void test2(int depth) {
+        if (depth == 3) {
+            return;
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Inner loop Depth: " + depth + " " + "i: " + i);
+            test2(depth + 1);
+        }
     }
 
     private void checkRootUrl(String url) {
         try {
             Document doc = Jsoup.connect(url).get();
             Elements anchorTags = doc.select("a[href]");
+
             for (Element anchorTag : anchorTags) {
                 String link = anchorTag.attributes().get("href");
                 if (link.equals("#") || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
@@ -53,28 +77,15 @@ public class LinkIntegrityChecker {
                     link = url + link;
                 }
                 int depth = 0;
-                try {
-                    URL urlTest = new URL(link);
-                    HttpURLConnection connection = (HttpURLConnection) urlTest.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.connect();
-
-                    int code = connection.getResponseCode();
-                    System.out.println("Code " + code + " " + "Depth " + depth + " " + link);
-                    if (threshold != 0) {
-                        checkLinks(link, depth);
-                    }
-
-                } catch (IOException ex) {
-                    System.out.println("Invalid Link " + link);
+                int code = getResCode(link);
+                System.out.println("Code " + code + " " + "Depth " + depth + " " + link);
+                if (threshold != 0 && code == HttpURLConnection.HTTP_OK) {
+                    checkLinks(link, depth);
                 }
-//                    String[] item = {"Valid", link};
-//                    urls.add(item);
             }
         } catch (IOException ex) {
             System.out.println("Invalid Link " + url);
         }
-
     }
 
     private void checkLinks(String url, int depth) {
@@ -91,13 +102,18 @@ public class LinkIntegrityChecker {
                 if (link.equals("#") || link.equals(rootUrl) || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
                     continue;
                 }
+                if (!link.startsWith("http://") && !link.startsWith("https://")) {
+                    link = url + link;
+                }
 
 //                if (!Helpers.isValidUrl(link)) {
 //                    link = url + link;
 //                }
                 int code = getResCode(link);
                 System.out.println("Code " + code + " " + "Depth " + depth + " " + link);
-                checkLinks(link, depth + 1);
+                if (code == HttpURLConnection.HTTP_OK) {
+                    checkLinks(link, depth + 1);
+                }
             }
         } catch (IOException ex) {
             System.out.println("Invalid Link " + url);
@@ -116,16 +132,22 @@ public class LinkIntegrityChecker {
         }
     }
 
-    private Elements getLinks(String url) {
-        try {
-            Document doc = Jsoup.connect(url).get();
-            Elements links = doc.select("a[href]");
-            return links;
-        } catch (IOException ex) {
-            return null;
-        }
-    }
-
+//    private String[] getLinks(String url) {
+//        ArrayList<String> links = new ArrayList<>();
+//        try {
+//            Document doc = Jsoup.connect(url).get();
+//            Elements anchorTags = doc.select("a[href]");
+//            anchorTags.stream()
+//                    .map((anchorTag) -> anchorTag.attributes()
+//                    .get("href")).filter((link) -> !(link.equals("#") || link.equals(url)))
+//                    .forEachOrdered((link) -> {
+//                        links.add(link);
+//                    });
+//            return (String[]) links.toArray();
+//        } catch (IOException ex) {
+//            return null;
+//        }
+//    }
 //
 //    private Elements getLinks(String rootUrl) {
 //        Elements anchorTags = null;
