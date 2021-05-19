@@ -35,34 +35,34 @@ public class LinkIntegrityChecker {
 //            System.out.println("Invalid rootUrl");
 //            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        System.out.println(Thread.activeCount());
-        System.out.println(Runtime.getRuntime().availableProcessors());
+//        System.out.println(Thread.activeCount());
+//        System.out.println(Runtime.getRuntime().availableProcessors());
         checkRootUrl(rootUrl);
     }
 
     public static void main(String[] args) {
-//        test();
-        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker("kddjfdkf", 0);
+//        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker("https://74mazen74.github.io/74Mazen.github.io/", 1);
+        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker("https://google.com", 0);
+//
     }
 
-    private static void test() {
-        for (int i = 0; i < 10; i++) {
-            int depth = 0;
-            System.out.println("Outerloop loop Depth: " + depth + " " + "i: " + i);
-            test2(depth);
-        }
-    }
-
-    private static void test2(int depth) {
-        if (depth == 3) {
-            return;
-        }
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Inner loop Depth: " + depth + " " + "i: " + i);
-            test2(depth + 1);
-        }
-    }
-
+//    private static void test() {
+//        for (int i = 0; i < 2; i++) {
+//            int depth = 0;
+//            System.out.println("Outerloop loop Depth: " + depth + " " + "i: " + i);
+//            test2(depth);
+//        }
+//    }
+//
+//    private static void test2(int depth) {
+//        if (depth == 2) {
+//            return;
+//        }
+//        for (int i = 0; i < 2; i++) {
+//            System.out.println("Depth: " + depth + " " + "j: " + i);
+//            test2(depth + 1);
+//        }
+//    }
     private void checkRootUrl(String url) {
         try {
             Document doc = Jsoup.connect(url).get();
@@ -73,9 +73,9 @@ public class LinkIntegrityChecker {
                 if (link.equals("#") || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
                     continue;
                 }
-                if (!Helpers.isValidUrl(link)) {
-                    link = url + link;
-                }
+//                if (!Helpers.isValidUrl(link)) {
+//                    link = url + link;
+//                }
                 int depth = 0;
                 int code = getResCode(link);
                 System.out.println("Code " + code + " " + "Depth " + depth + " " + link);
@@ -90,7 +90,7 @@ public class LinkIntegrityChecker {
 
     private void checkLinks(String url, int depth) {
         if (depth == threshold) {
-            System.out.println("\n Returned at depth: " + depth + "\n");
+//            System.out.println("\n Returned at depth: " + depth + "\n");
             return;
         }
         try {
@@ -98,14 +98,12 @@ public class LinkIntegrityChecker {
             Elements anchorTags = doc.select("a[href]");
             for (Element anchorTag : anchorTags) {
                 String link = anchorTag.attributes().get("href");
-
                 if (link.equals("#") || link.equals(rootUrl) || link.equals(url)) { // if the extracted link is the same as the domain or it is # skip them
                     continue;
                 }
                 if (!link.startsWith("http://") && !link.startsWith("https://")) {
                     link = url + link;
                 }
-
 //                if (!Helpers.isValidUrl(link)) {
 //                    link = url + link;
 //                }

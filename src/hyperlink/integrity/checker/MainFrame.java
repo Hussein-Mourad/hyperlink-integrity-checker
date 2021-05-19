@@ -235,8 +235,8 @@ public class MainFrame extends javax.swing.JFrame {
         if (!th.isEmpty()) {
             if (!Helpers.isNumeric(th)) {
                 thresholdErrorMessage.setText("Threshold must be a number");
-            } else if (Integer.valueOf(th) < 0 || Integer.valueOf(th) > 100) {
-                thresholdErrorMessage.setText("Invalid threshold value");
+            } else if (Integer.valueOf(th) < 0 || Integer.valueOf(th) > 10) {
+                thresholdErrorMessage.setText("Thershold must be between 0 and 10");
             } else {
                 threshold = Integer.valueOf(th);
             }
