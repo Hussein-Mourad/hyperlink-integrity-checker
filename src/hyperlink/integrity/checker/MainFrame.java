@@ -11,17 +11,32 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author hussein
  */
-public class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame implements Runnable {
 
     String url;
     int threshold;
     String[] tableHeaders;
     String[][] tableData;
+    MainFrame main;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
+        initComponents();
+    }
+
+    /**
+     * Creates new form MainFrame
+     *
+     * @param main
+     * @param url
+     * @param threshold
+     */
+    public MainFrame(MainFrame main, String url, int threshold) {
+        this.url = url;
+        this.threshold = threshold;
+        this.main = main;
         initComponents();
     }
 
@@ -51,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         loadingPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        canelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -158,6 +174,8 @@ public class MainFrame extends javax.swing.JFrame {
         table.setAutoCreateRowSorter(true);
         table.setBackground(new java.awt.Color(245, 245, 245));
         table.setModel(new javax.swing.table.DefaultTableModel(tableData,tableHeaders));
+        table.setEditingColumn(0);
+        table.setEditingRow(0);
         jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
@@ -189,6 +207,13 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(38, 38, 38));
         jLabel2.setText("This might take a while");
 
+        canelButton.setText("Cancel");
+        canelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                canelButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout loadingPanelLayout = new javax.swing.GroupLayout(loadingPanel);
         loadingPanel.setLayout(loadingPanelLayout);
         loadingPanelLayout.setHorizontalGroup(
@@ -196,6 +221,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(loadingPanelLayout.createSequentialGroup()
                 .addGap(244, 244, 244)
                 .addGroup(loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(canelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addContainerGap(242, Short.MAX_VALUE))
@@ -207,7 +233,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addGap(56, 56, 56)
+                .addComponent(canelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         cardPanel.add(loadingPanel, "card4");
@@ -281,20 +309,42 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_thresholdTextFieldKeyReleased
 
     private void loadingPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_loadingPanelComponentShown
-        LinkIntegrityChecker checker = new LinkIntegrityChecker(url, threshold);
-        tableData = checker.getResults();
-        tableHeaders = Link.ArrayFields();
-        table.setModel(new DefaultTableModel(tableData, tableHeaders));
-        cardPanel.removeAll();
-        cardPanel.add(tablePanel);
-        this.setResizable(true);
-        repaint();
-        revalidate();
+        MainFrame obj = new MainFrame(this, url, threshold);
+        obj.setVisible(false);
+        Thread thread = new Thread(obj);
+        thread.start();
     }//GEN-LAST:event_loadingPanelComponentShown
+
+    private void canelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canelButtonActionPerformed
+        this.setVisible(false);
+        new MainFrame().setVisible(true);
+    }//GEN-LAST:event_canelButtonActionPerformed
 
     private void enableButton() {
         boolean check = !url.isEmpty() && url.length() >= 10 && threshold >= 0 && threshold <= 10;
         checkButton.setEnabled(check);
+
+    }
+
+    @Override
+    public void run() {
+        System.out.println("This code is running in a thread");
+        LinkIntegrityChecker checker = new LinkIntegrityChecker(url, threshold);
+        main.tableData = checker.getResults();
+        main.tableHeaders = Link.ArrayFields();
+        main.table.setModel(new DefaultTableModel(main.tableData, main.tableHeaders) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        });
+        System.out.println("Done.");
+        main.cardPanel.removeAll();
+        main.cardPanel.add(tablePanel);
+        main.setResizable(true);
+        main.repaint();
+        main.revalidate();
 
     }
 
@@ -329,6 +379,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton canelButton;
     private javax.swing.JPanel cardPanel;
     private javax.swing.JButton checkButton;
     private javax.swing.JLabel errorMessageLabel;

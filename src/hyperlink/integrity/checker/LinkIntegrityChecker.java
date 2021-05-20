@@ -62,7 +62,7 @@ public class LinkIntegrityChecker {
                 // if the extracted link is the same as the domain or it starts with # skip them
                 if (!absHref.startsWith("#") && !absHref.equals(url)) {
                     int code = getResCode(absHref);
-//                  System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
+                    System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
                     link.setStatusCode(code);
                     if (link.isValid()) {
                         if (threshold != 0) {
@@ -95,7 +95,7 @@ public class LinkIntegrityChecker {
                 if (!absHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
                     int code = getResCode(absHref);
                     link.setStatusCode(code);
-//                  System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
+                    System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
                     if (link.isValid()) {
                         checkSubLinks(absHref, depth + 1);
                     }
@@ -187,4 +187,7 @@ public class LinkIntegrityChecker {
 //            test2(depth + 1);
 //        }
 //    }
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
