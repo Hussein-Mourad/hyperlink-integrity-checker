@@ -18,6 +18,7 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     String[] tableHeaders;
     String[][] tableData;
     MainFrame main;
+    MainFrame obj;
 
     /**
      * Creates new form MainFrame
@@ -300,24 +301,23 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
             if (!Helpers.isNumeric(th)) {
                 thresholdErrorMessage.setText("Threshold must be a number");
             } else if (Integer.valueOf(th) < 0 || Integer.valueOf(th) > 10) {
-                thresholdErrorMessage.setText("Thershold must be between 0 and 10");
-            } else {
                 threshold = Integer.valueOf(th);
+                thresholdErrorMessage.setText("Thershold must be between 0 and 10");
             }
             enableButton();
         }
     }//GEN-LAST:event_thresholdTextFieldKeyReleased
 
     private void loadingPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_loadingPanelComponentShown
-        MainFrame obj = new MainFrame(this, url, threshold);
+        obj = new MainFrame(this, url, threshold);
         obj.setVisible(false);
         Thread thread = new Thread(obj);
         thread.start();
     }//GEN-LAST:event_loadingPanelComponentShown
 
     private void canelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canelButtonActionPerformed
-        this.setVisible(false);
         new MainFrame().setVisible(true);
+        main.dispose();
     }//GEN-LAST:event_canelButtonActionPerformed
 
     private void enableButton() {
@@ -341,7 +341,7 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
         });
         System.out.println("Done.");
         main.cardPanel.removeAll();
-        main.cardPanel.add(tablePanel);
+        main.cardPanel.add(main.tablePanel);
         main.setResizable(true);
         main.repaint();
         main.revalidate();
