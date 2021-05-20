@@ -14,7 +14,7 @@ public class Link {
     private String relHref;
     private String absHref;
     private String text;
-    private int statusCode;
+    private int statusCode = 200;
     private final int HTTP_OK = 200;
 
     /*

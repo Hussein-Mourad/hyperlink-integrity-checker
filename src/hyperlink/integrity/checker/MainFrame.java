@@ -11,33 +11,17 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author hussein
  */
-public class MainFrame extends javax.swing.JFrame implements Runnable {
+public class MainFrame extends javax.swing.JFrame {
 
     String url;
     int threshold;
     String[] tableHeaders;
     String[][] tableData;
-    MainFrame main;
-    MainFrame obj;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-        initComponents();
-    }
-
-    /**
-     * Creates new form MainFrame
-     *
-     * @param main
-     * @param url
-     * @param threshold
-     */
-    public MainFrame(MainFrame main, String url, int threshold) {
-        this.url = url;
-        this.threshold = threshold;
-        this.main = main;
         initComponents();
     }
 
@@ -67,7 +51,6 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
         loadingPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        canelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -122,24 +105,21 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
         homePanelLayout.setHorizontalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addContainerGap(49, Short.MAX_VALUE)
-                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(title)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
-                                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(urlLabel)
-                                    .addComponent(thresholdLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(urlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
-                                    .addComponent(thresholdTextField)
-                                    .addComponent(thresholdErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(title)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
+                            .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(urlLabel)
+                                .addComponent(thresholdLabel))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(urlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                                .addComponent(thresholdTextField)
+                                .addComponent(thresholdErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
@@ -169,14 +149,9 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
         tablePanel.setBackground(new java.awt.Color(245, 245, 245));
         tablePanel.setForeground(new java.awt.Color(38, 38, 38));
 
-        jScrollPane1.setBackground(new java.awt.Color(245, 245, 245));
-        jScrollPane1.setForeground(new java.awt.Color(245, 245, 245));
-
         table.setAutoCreateRowSorter(true);
         table.setBackground(new java.awt.Color(245, 245, 245));
         table.setModel(new javax.swing.table.DefaultTableModel(tableData,tableHeaders));
-        table.setEditingColumn(0);
-        table.setEditingRow(0);
         jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
@@ -208,24 +183,19 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
         jLabel2.setForeground(new java.awt.Color(38, 38, 38));
         jLabel2.setText("This might take a while");
 
-        canelButton.setText("Cancel");
-        canelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                canelButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout loadingPanelLayout = new javax.swing.GroupLayout(loadingPanel);
         loadingPanel.setLayout(loadingPanelLayout);
         loadingPanelLayout.setHorizontalGroup(
             loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loadingPanelLayout.createSequentialGroup()
-                .addGap(244, 244, 244)
-                .addGroup(loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(canelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addGroup(loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(loadingPanelLayout.createSequentialGroup()
+                        .addGap(244, 244, 244)
+                        .addComponent(jLabel1))
+                    .addGroup(loadingPanelLayout.createSequentialGroup()
+                        .addGap(216, 216, 216)
+                        .addComponent(jLabel2)))
+                .addContainerGap(270, Short.MAX_VALUE))
         );
         loadingPanelLayout.setVerticalGroup(
             loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,9 +204,7 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(56, 56, 56)
-                .addComponent(canelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         cardPanel.add(loadingPanel, "card4");
@@ -274,77 +242,78 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void urlTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_urlTextFieldKeyReleased
-        url = urlTextField.getText();
-        errorMessageLabel.setText("");
-        checkButton.setEnabled(false);
-// checks when the user enters at least 10 characters
-        if (!url.isEmpty() && url.length() >= 10) {
-            if (!Helpers.isValidUrl(url)) {
-                errorMessageLabel.setText("Please enter a url");
-            }
-        }
-        enableButton();
+        checkInputs();
     }//GEN-LAST:event_urlTextFieldKeyReleased
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
+
         cardPanel.removeAll();
         cardPanel.add(loadingPanel);
         repaint();
         revalidate();
+
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException ex) {
+//        }
+//        this.dispose();
+//        this.setVisible(false);
+//        new LoadingScreen().setVisible(true);
+//        LinkIntegrityChecker checker = new LinkIntegrityChecker(url, threshold);
+//        tableData = checker.getResults();
+//        tableHeaders = Link.ArrayFields();
+//        table.setModel(new DefaultTableModel(tableData, tableHeaders));
+//        cardPanel.removeAll();
+//        cardPanel.add(tablePanel);
+//        this.setResizable(true);
+//        repaint();
+//        revalidate();
+//        this.dispose();
     }//GEN-LAST:event_checkButtonActionPerformed
 
     private void thresholdTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_thresholdTextFieldKeyReleased
+        checkInputs();
+    }//GEN-LAST:event_thresholdTextFieldKeyReleased
+
+    private void loadingPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_loadingPanelComponentShown
+        LinkIntegrityChecker checker = new LinkIntegrityChecker(url, threshold);
+        tableData = checker.getResults();
+        tableHeaders = Link.ArrayFields();
+        table.setModel(new DefaultTableModel(tableData, tableHeaders));
+        cardPanel.removeAll();
+        cardPanel.add(tablePanel);
+        this.setResizable(true);
+        repaint();
+        revalidate();
+    }//GEN-LAST:event_loadingPanelComponentShown
+
+    private void checkInputs() {
+        url = urlTextField.getText();
         String th = thresholdTextField.getText();
         thresholdErrorMessage.setText("");
+        errorMessageLabel.setText("");
         checkButton.setEnabled(false);
+        boolean urlCheck = false;
+        boolean thCheck = false;
+        if (!url.isEmpty() && url.length() >= 10) { // checks when the user enters at least 10 characters
+            if (Helpers.isValidUrl(url)) { // checks if it is a url
+                urlCheck = true;
+            } else {
+                errorMessageLabel.setText("Please enter a url");
+            }
+        }
         if (!th.isEmpty()) {
             if (!Helpers.isNumeric(th)) {
                 thresholdErrorMessage.setText("Threshold must be a number");
             } else if (Integer.valueOf(th) < 0 || Integer.valueOf(th) > 10) {
-                threshold = Integer.valueOf(th);
                 thresholdErrorMessage.setText("Thershold must be between 0 and 10");
+            } else {
+                threshold = Integer.valueOf(th);
+                thCheck = true;
             }
-            enableButton();
         }
-    }//GEN-LAST:event_thresholdTextFieldKeyReleased
 
-    private void loadingPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_loadingPanelComponentShown
-        obj = new MainFrame(this, url, threshold);
-        obj.setVisible(false);
-        Thread thread = new Thread(obj);
-        thread.start();
-    }//GEN-LAST:event_loadingPanelComponentShown
-
-    private void canelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canelButtonActionPerformed
-        new MainFrame().setVisible(true);
-        main.dispose();
-    }//GEN-LAST:event_canelButtonActionPerformed
-
-    private void enableButton() {
-        boolean check = !url.isEmpty() && url.length() >= 10 && threshold >= 0 && threshold <= 10;
-        checkButton.setEnabled(check);
-
-    }
-
-    @Override
-    public void run() {
-        System.out.println("This code is running in a thread");
-        LinkIntegrityChecker checker = new LinkIntegrityChecker(url, threshold);
-        main.tableData = checker.getResults();
-        main.tableHeaders = Link.ArrayFields();
-        main.table.setModel(new DefaultTableModel(main.tableData, main.tableHeaders) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells false
-                return false;
-            }
-        });
-        System.out.println("Done.");
-        main.cardPanel.removeAll();
-        main.cardPanel.add(main.tablePanel);
-        main.setResizable(true);
-        main.repaint();
-        main.revalidate();
+        checkButton.setEnabled(urlCheck && thCheck);
 
     }
 
@@ -379,7 +348,6 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;
-    private javax.swing.JButton canelButton;
     private javax.swing.JPanel cardPanel;
     private javax.swing.JButton checkButton;
     private javax.swing.JLabel errorMessageLabel;

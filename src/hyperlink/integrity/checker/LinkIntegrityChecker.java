@@ -58,9 +58,9 @@ public class LinkIntegrityChecker {
                 String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
                 String linkText = anchorTag.text();
 
-                Link link = new Link(relHref, absHref, linkText);
                 // if the extracted link is the same as the domain or it starts with # skip them
-                if (!absHref.startsWith("#") && !absHref.equals(url)) {
+                Link link = new Link(relHref, absHref, linkText);
+                if (!relHref.startsWith("#") && !absHref.equals(url)) {
                     int code = getResCode(absHref);
                     System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
                     link.setStatusCode(code);
@@ -90,9 +90,8 @@ public class LinkIntegrityChecker {
                 String linkText = anchorTag.text();
 
                 Link link = new Link(relHref, absHref, linkText);
-
                 // if the extracted link is the same as the domain or it starts # skip them
-                if (!absHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
+                if (!relHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
                     int code = getResCode(absHref);
                     link.setStatusCode(code);
                     System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
