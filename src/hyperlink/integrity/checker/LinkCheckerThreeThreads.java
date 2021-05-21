@@ -30,9 +30,15 @@ public class LinkCheckerThreeThreads {
 
     private void checkRootUrl(String url) {
         Elements anchorTags = Utils.getAnchorTags(url);
+        for (int i = 0; i < anchorTags.size(); i++) {
+            Element link = anchorTags.get(i);
+            link.get
+
+        }
         if (anchorTags == null) {
             return;
         }
+
         for (Element anchorTag : anchorTags) {
             int depth = 0;
             String relHref = anchorTag.attr("href"); // == "/"
@@ -40,8 +46,6 @@ public class LinkCheckerThreeThreads {
 
             // if the extracted link is the same as the domain or it starts with # skip them
             if (!relHref.startsWith("#") && !absHref.equals(url)) {
-                int code = Utils.getResCode(absHref);
-                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
 
                 if (link.isValid() && threshold != 0) {
                     checkSubLinks(absHref, depth);
