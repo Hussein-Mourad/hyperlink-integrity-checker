@@ -18,32 +18,16 @@ import org.jsoup.select.Elements;
  *
  * @author hussein
  */
-public class LinkIntegrityChecker {
+public class LinkCheckerTwoThreads implements Runnable {
 
     private String rootUrl;
     private int threshold;
     private ArrayList<Link> links = new ArrayList<>();
 
-    public LinkIntegrityChecker(String url, int threshold) {
+    public LinkCheckerTwoThreads(String url, int threshold) {
         this.rootUrl = url;
         this.threshold = threshold;
-
-//        try {
-//            URL u = new URL(rootUrl);
-//            System.out.println("Valid rootUrl");
-//        } catch (MalformedURLException ex) {
-//            System.out.println("Invalid rootUrl");
-//            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        System.out.println(Thread.activeCount());
-        System.out.println(Runtime.getRuntime().availableProcessors());
         checkRootUrl(rootUrl);
-    }
-
-    public static void main(String[] args) {
-        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker("https://74mazen74.github.io/74Mazen.github.io/", 1);
-//        LinkIntegrityChecker linkIntegrityChecker = new LinkIntegrityChecker("https://google.com", 0);
-//
     }
 
     private void checkRootUrl(String url) {
@@ -128,64 +112,6 @@ public class LinkIntegrityChecker {
         return arr;
     }
 
-//    private String[] getLinkData(String url) {
-//        Document doc = Jsoup.connect(url).get();
-//
-//    }
-//    private String[] getLinks(String url) {
-//        ArrayList<String> links = new ArrayList<>();
-//        try {
-//            Document doc = Jsoup.connect(url).get();
-//            Elements anchorTags = doc.select("a[href]");
-//            anchorTags.stream()
-//                    .map((anchorTag) -> anchorTag.attributes()
-//                    .get("href")).filter((link) -> !(link.equals("#") || link.equals(url)))
-//                    .forEachOrdered((link) -> {
-//                        links.add(link);
-//                    });
-//            return (String[]) links.toArray();
-//        } catch (IOException ex) {
-//            return null;
-//        }
-//    }
-//
-//    private Elements getLinks(String rootUrl) {
-//        Elements anchorTags = null;
-//        try {
-//            Document doc = Jsoup.connect(rootUrl).get();
-//            anchorTags = doc.select("a[href]");
-//        } catch (IOException ex) {
-//
-//        }
-//        return anchorTags;
-//    }
-//    public static void main(String[] args) {
-//        LinkIntegrityChecker obj = new LinkIntegrityChecker(this.rootUrl);
-//        Thread thread = new Thread(obj);
-//        thread.start();
-//        System.out.println("This code is outside of the thread");
-//    }
-//
-//    public void run() {
-//        System.out.println("This code is running in a thread");
-//    }
-    //    private static void test() {
-//        for (int i = 0; i < 2; i++) {
-//            int depth = 0;
-//            System.out.println("Outerloop loop Depth: " + depth + " " + "i: " + i);
-//            test2(depth);
-//        }
-//    }
-//
-//    private static void test2(int depth) {
-//        if (depth == 2) {
-//            return;
-//        }
-//        for (int i = 0; i < 2; i++) {
-//            System.out.println("Depth: " + depth + " " + "j: " + i);
-//            test2(depth + 1);
-//        }
-//    }
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
