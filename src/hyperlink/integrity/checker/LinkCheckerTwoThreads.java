@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
  *
  * @author hussein
  */
-public class LinkCheckerTwoThreads implements Runnable {
+public class LinkCheckerTwoThreads {
 
     private String rootUrl;
     private int threshold;
@@ -45,11 +45,13 @@ public class LinkCheckerTwoThreads implements Runnable {
 
             // if the extracted link is the same as the domain or it starts with # skip them
             if (!relHref.startsWith("#") && !absHref.equals(url)) {
+                Threading threading = new Threading(url);
+                threading.start();
                 int code = Utils.getResCode(absHref);
                 System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
                 link.setStatusCode(code);
 
-                if (link.isValid() && threshold != 0) {
+                if (link.isValid() && threshold == 1) {
                     checkSubLinks(absHref, depth);
                 }
             }
@@ -89,11 +91,6 @@ public class LinkCheckerTwoThreads implements Runnable {
 
     public String[][] getLinksData() {
         return Utils.linksToArray(links);
-    }
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
