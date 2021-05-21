@@ -524,7 +524,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void viewStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStatsButtonActionPerformed
         cardPanel.removeAll();
         cardPanel.add(statsPanel);
-        setSize(new java.awt.Dimension(640, 383));
+//        setSize(new java.awt.Dimension(640, 383));
         this.setResizable(false);
         repaint();
         revalidate();
