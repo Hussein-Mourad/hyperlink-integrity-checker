@@ -18,6 +18,12 @@ public class MainFrame extends javax.swing.JFrame {
     int threads = 1;
     String[] tableHeaders;
     String[][] tableData;
+//    String elapsedTimeOneThread;
+//    String elapsedTimeTwoThreads;
+//    String elapsedTimeThreeThreads;
+//    String elapsedTimeFourThreads;
+//    String validLinks;
+//    String invalidLinks;
 
     /**
      * Creates new form MainFrame
@@ -50,9 +56,27 @@ public class MainFrame extends javax.swing.JFrame {
         tablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        viewStatsButton = new javax.swing.JButton();
+        checkAgainTableButton = new javax.swing.JButton();
         loadingPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        statsPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        oneThreadLabel = new javax.swing.JLabel();
+        twoThreadLabel = new javax.swing.JLabel();
+        threeThreadLabel = new javax.swing.JLabel();
+        fourThreadLabel = new javax.swing.JLabel();
+        validLinksLabel = new javax.swing.JLabel();
+        invalidLinksLabel = new javax.swing.JLabel();
+        viewLinksButton = new javax.swing.JButton();
+        checkAgainStatsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Link Checker");
@@ -124,19 +148,19 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(title))
                     .addGroup(homePanelLayout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(homePanelLayout.createSequentialGroup()
-                                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(urlLabel)
-                                    .addComponent(thresholdLabel)
-                                    .addComponent(threadsLabel))
-                                .addGap(26, 26, 26)
-                                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(thresholdSelect, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(urlTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(threadsSelect, 0, 474, Short.MAX_VALUE)
-                                    .addComponent(errorMessageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(urlLabel)
+                            .addComponent(thresholdLabel)
+                            .addComponent(threadsLabel))
+                        .addGap(26, 26, 26)
+                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(thresholdSelect, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(urlTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(threadsSelect, 0, 474, Short.MAX_VALUE)
+                            .addComponent(errorMessageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
+                        .addGap(201, 201, 201)
+                        .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
@@ -144,7 +168,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(urlLabel)
                     .addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,15 +197,42 @@ public class MainFrame extends javax.swing.JFrame {
         table.setModel(new javax.swing.table.DefaultTableModel(tableData,tableHeaders));
         jScrollPane1.setViewportView(table);
 
+        viewStatsButton.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        viewStatsButton.setText("View Stats");
+        viewStatsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewStatsButtonActionPerformed(evt);
+            }
+        });
+
+        checkAgainTableButton.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        checkAgainTableButton.setText("Check again");
+        checkAgainTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkAgainTableButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
+            .addGroup(tablePanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(viewStatsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(checkAgainTableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         tablePanelLayout.setVerticalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+            .addGroup(tablePanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(checkAgainTableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(viewStatsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         cardPanel.add(tablePanel, "card3");
@@ -223,10 +274,150 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
 
         cardPanel.add(loadingPanel, "card4");
+
+        statsPanel.setBackground(new java.awt.Color(245, 248, 248));
+
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel3.setText("Exec. time at 1 thread:");
+
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel6.setText("Performance");
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel4.setText("Exec. time at 4 threads:");
+
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel5.setText("Exec. time at 3 threads:");
+
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel7.setText("Exec. time at 2 threads:");
+
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel8.setText("Number of valid links:");
+
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(38, 38, 38));
+        jLabel9.setText("Number of invalid links:");
+
+        oneThreadLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        oneThreadLabel.setForeground(new java.awt.Color(38, 38, 38));
+        oneThreadLabel.setText("0");
+
+        twoThreadLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        twoThreadLabel.setForeground(new java.awt.Color(38, 38, 38));
+        twoThreadLabel.setText("0");
+
+        threeThreadLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        threeThreadLabel.setForeground(new java.awt.Color(38, 38, 38));
+        threeThreadLabel.setText("0");
+
+        fourThreadLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        fourThreadLabel.setForeground(new java.awt.Color(38, 38, 38));
+        fourThreadLabel.setText("0\n");
+
+        validLinksLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        validLinksLabel.setForeground(new java.awt.Color(38, 38, 38));
+        validLinksLabel.setText("0\n");
+
+        invalidLinksLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        invalidLinksLabel.setForeground(new java.awt.Color(38, 38, 38));
+        invalidLinksLabel.setText("0");
+
+        viewLinksButton.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        viewLinksButton.setText("View Links");
+        viewLinksButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewLinksButtonActionPerformed(evt);
+            }
+        });
+
+        checkAgainStatsButton.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        checkAgainStatsButton.setText("Check again");
+        checkAgainStatsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkAgainStatsButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout statsPanelLayout = new javax.swing.GroupLayout(statsPanel);
+        statsPanel.setLayout(statsPanelLayout);
+        statsPanelLayout.setHorizontalGroup(
+            statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statsPanelLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addGroup(statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(statsPanelLayout.createSequentialGroup()
+                        .addComponent(viewLinksButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(checkAgainStatsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(statsPanelLayout.createSequentialGroup()
+                        .addGroup(statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addGap(29, 29, 29)
+                        .addGroup(statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(oneThreadLabel)
+                            .addComponent(twoThreadLabel)
+                            .addComponent(threeThreadLabel)
+                            .addComponent(fourThreadLabel)
+                            .addComponent(validLinksLabel)
+                            .addComponent(invalidLinksLabel)))
+                    .addComponent(jLabel6))
+                .addContainerGap(328, Short.MAX_VALUE))
+        );
+        statsPanelLayout.setVerticalGroup(
+            statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statsPanelLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(statsPanelLayout.createSequentialGroup()
+                        .addComponent(oneThreadLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(twoThreadLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(threeThreadLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(fourThreadLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(validLinksLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(invalidLinksLabel))
+                    .addGroup(statsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9)))
+                .addGap(29, 29, 29)
+                .addGroup(statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viewLinksButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkAgainStatsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(103, Short.MAX_VALUE))
+        );
+
+        cardPanel.add(statsPanel, "card5");
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -265,52 +456,41 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_urlTextFieldKeyReleased
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
-
         cardPanel.removeAll();
         cardPanel.add(loadingPanel);
         repaint();
         revalidate();
-
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException ex) {
-//        }
-//        this.dispose();
-//        this.setVisible(false);
-//        new LoadingScreen().setVisible(true);
-//        LinkCheckerOneThread checker = new LinkCheckerOneThread(url, threshold);
-//        tableData = checker.getLinksData();
-//        tableHeaders = Link.ArrayFields();
-//        table.setModel(new DefaultTableModel(tableData, tableHeaders));
-//        cardPanel.removeAll();
-//        cardPanel.add(tablePanel);
-//        this.setResizable(true);
-//        repaint();
-//        revalidate();
-//        this.dispose();
     }//GEN-LAST:event_checkButtonActionPerformed
 
     private void loadingPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_loadingPanelComponentShown
-        switch (threads) {
-            case 1:
-                LinkCheckerOneThread checker1 = new LinkCheckerOneThread(url, threshold);
-                String elapsedTimeOneThread = checker1.start();
-//                System.out.println(elap);
-                tableData = checker1.getLinksData();
-                break;
-            case 2:
-                LinkCheckerTwoThreads checker2 = new LinkCheckerTwoThreads(url, threshold);
-                tableData = checker2.getResults();
-                break;
-            case 3:
-                LinkCheckerThreeThreads checker3 = new LinkCheckerThreeThreads(url, threshold);
-                tableData = checker3.getResults();
-                break;
-            case 4:
-                LinkCheckerFourThreads checker4 = new LinkCheckerFourThreads(url, threshold);
-                tableData = checker4.getResults();
-                break;
+        LinkCheckerOneThread checker1 = new LinkCheckerOneThread(url, threshold);
+        String elapsedTimeOneThread = checker1.start();
+        oneThreadLabel.setText(elapsedTimeOneThread);
+        String validLinks = String.valueOf(checker1.getNumberOfValidLinks());
+        String invalidLinks = String.valueOf(checker1.getNumberOfInvalidLinks());
+        validLinksLabel.setText(validLinks);
+        invalidLinksLabel.setText(invalidLinks);
+
+        tableData = checker1.getLinksData();
+
+        if (threads >= 2) {
+            LinkCheckerTwoThreads checker2 = new LinkCheckerTwoThreads(url, threshold);
+            String elapsedTimeTwoThreads = checker2.start();
+            twoThreadLabel.setText(elapsedTimeTwoThreads);
         }
+
+        if (threads >= 3) {
+            LinkCheckerThreeThreads checker3 = new LinkCheckerThreeThreads(url, threshold);
+            String elapsedTimeThreeThreads = checker3.start();
+            threeThreadLabel.setText(elapsedTimeThreeThreads);
+        }
+
+        if (threads == 4) {
+            LinkCheckerFourThreads checker4 = new LinkCheckerFourThreads(url, threshold);
+            String elapsedTimeFourThreads = checker4.start();
+            fourThreadLabel.setText(elapsedTimeFourThreads);
+        }
+
         tableHeaders = Link.ArrayFields();
         table.setModel(new DefaultTableModel(tableData, tableHeaders));
         cardPanel.removeAll();
@@ -327,6 +507,33 @@ public class MainFrame extends javax.swing.JFrame {
     private void threadsSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_threadsSelectActionPerformed
         threads = threadsSelect.getSelectedIndex() + 1;
     }//GEN-LAST:event_threadsSelectActionPerformed
+
+    private void viewLinksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLinksButtonActionPerformed
+        cardPanel.removeAll();
+        cardPanel.add(tablePanel);
+        this.setResizable(true);
+        repaint();
+        revalidate();
+    }//GEN-LAST:event_viewLinksButtonActionPerformed
+
+    private void checkAgainStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAgainStatsButtonActionPerformed
+        new MainFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_checkAgainStatsButtonActionPerformed
+
+    private void viewStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStatsButtonActionPerformed
+        cardPanel.removeAll();
+        cardPanel.add(statsPanel);
+        setSize(new java.awt.Dimension(640, 383));
+        this.setResizable(false);
+        repaint();
+        revalidate();
+    }//GEN-LAST:event_viewStatsButtonActionPerformed
+
+    private void checkAgainTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAgainTableButtonActionPerformed
+        new MainFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_checkAgainTableButtonActionPerformed
 
     private void checkUrl() {
         url = urlTextField.getText();
@@ -373,20 +580,38 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JPanel cardPanel;
+    private javax.swing.JButton checkAgainStatsButton;
+    private javax.swing.JButton checkAgainTableButton;
     private javax.swing.JButton checkButton;
     private javax.swing.JLabel errorMessageLabel;
+    private javax.swing.JLabel fourThreadLabel;
     private javax.swing.JPanel homePanel;
+    private javax.swing.JLabel invalidLinksLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel loadingPanel;
+    private javax.swing.JLabel oneThreadLabel;
+    private javax.swing.JPanel statsPanel;
     private javax.swing.JTable table;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel threadsLabel;
     private javax.swing.JComboBox<String> threadsSelect;
+    private javax.swing.JLabel threeThreadLabel;
     private javax.swing.JLabel thresholdLabel;
     private javax.swing.JComboBox<String> thresholdSelect;
+    private javax.swing.JLabel twoThreadLabel;
     private javax.swing.JLabel urlLabel;
     private javax.swing.JTextField urlTextField;
+    private javax.swing.JLabel validLinksLabel;
+    private javax.swing.JButton viewLinksButton;
+    private javax.swing.JButton viewStatsButton;
     // End of variables declaration//GEN-END:variables
 }

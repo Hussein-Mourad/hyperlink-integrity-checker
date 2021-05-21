@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -49,26 +48,15 @@ public class Utils {
         return false;
     }
 
-    public static Link[] getLinks(String url) {
-        ArrayList<Link> tmp = new ArrayList<>();
+    public static Elements getAnchorTags(String url) {
         try {
             Document doc = Jsoup.connect(url).get();
             Elements anchorTags = doc.select("a[href]");
-
-            for (Element anchorTag : anchorTags) {
-                String relHref = anchorTag.attr("href"); // == "/"
-                String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
-                String linkText = anchorTag.text();
-                Link link = new Link(relHref, absHref, linkText);
-                tmp.add(link);
-            }
+            return anchorTags;
         } catch (IllegalArgumentException | IOException ex) {
             System.out.println("Not a link " + url);
+            return null;
         }
-
-        Link[] links = new Link[tmp.size()];
-        links = tmp.toArray(links);
-        return links;
     }
 
     public static String[][] linksToArray(ArrayList<Link> links) {

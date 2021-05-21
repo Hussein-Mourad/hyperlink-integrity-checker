@@ -6,7 +6,8 @@
 package hyperlink.integrity.checker;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -17,6 +18,8 @@ public class LinkCheckerOneThread {
     private String rootUrl;
     private int threshold;
     private ArrayList<Link> links = new ArrayList<>();
+    private int numberOfValidLinks = 0;
+    private int numberOfInvalidLinks = 0;
 
     public LinkCheckerOneThread(String url, int threshold) {
         this.rootUrl = url;
@@ -24,39 +27,51 @@ public class LinkCheckerOneThread {
 
     }
 
+    public int getNumberOfValidLinks() {
+        return numberOfValidLinks;
+    }
+
+    public int getNumberOfInvalidLinks() {
+        return numberOfInvalidLinks;
+    }
+
     public String start() {
-        String time;
         long start = System.nanoTime();
         checkRootUrl(rootUrl);
-        long elapsedTime = System.nanoTime() - start;
-        long duration = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-        time = duration + " s";
-        if (duration >= 60) {
-            duration /= 60;
-            time =
-        }
-        System.out.println("One Thread elapsed time: " + duration + " s");
-        return elapsedTime;
+        return Utils.getDuration(System.nanoTime() - start);
     }
 
     private void checkRootUrl(String url) {
-
-        Link[] urls = Utils.getLinks(url);
-
-        for (Link link : urls) {
-            links.add(link);
-            int depth = 0;
-            if (!link.getRelHref().startsWith("#") && !link.getAbsHref().equals(url)) {
-                int code = Utils.getResCode(link.getAbsHref());
-                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + link.getAbsHref());
-                link.setStatusCode(code);
-                if (link.isValid()) {
-                    if (threshold != 0) {
-                        checkSubLinks(link.getAbsHref(), depth);
-                    }
-                }
-            }
+        Elements anchorTags = Utils.getAnchorTags(url);
+        if (anchorTags == null) {
+            return;
         }
+        for (Element anchorTag : anchorTags) {
+            int depth = 0;
+            String relHref = anchorTag.attr("href"); // == "/"
+            String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
+            String linkText = anchorTag.text();
+            Link link = new Link(relHref, absHref, linkText);
+
+            // if the extracted link is the same as the domain or it starts with # skip them
+            if (!relHref.startsWith("#") && !absHref.equals(url)) {
+                int code = Utils.getResCode(absHref);
+                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
+                link.setStatusCode(code);
+
+                if (link.isValid()) {
+                    numberOfValidLinks++;
+                    if (threshold != 0) {
+                        checkSubLinks(absHref, depth);
+                    }
+                } else {
+                    numberOfInvalidLinks++;
+                }
+
+            }
+            links.add(link);
+        }
+
     }
 
     private void checkSubLinks(String url, int depth) {
@@ -64,19 +79,31 @@ public class LinkCheckerOneThread {
             return;
         }
 
-        Link[] urls = Utils.getLinks(url);
+        Elements anchorTags = Utils.getAnchorTags(url);
+        if (anchorTags == null) {
+            return;
+        }
+        for (Element anchorTag : anchorTags) {
+            String relHref = anchorTag.attr("href"); // == "/"
+            String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
+            String linkText = anchorTag.text();
+            Link link = new Link(relHref, absHref, linkText);
 
-        for (Link link : urls) {
-            links.add(link);
-            if (!link.getRelHref().startsWith("#") && !link.getAbsHref().equals(url)) {
-                int code = Utils.getResCode(link.getAbsHref());
-                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + link.getAbsHref());
+            // if the extracted link is the same as the domain or it starts # skip them
+            if (!relHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
+                int code = Utils.getResCode(absHref);
                 link.setStatusCode(code);
+                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
                 if (link.isValid()) {
-                    checkSubLinks(link.getAbsHref(), depth + 1);
+                    numberOfValidLinks++;
+                    checkSubLinks(absHref, depth + 1);
+                } else {
+                    numberOfInvalidLinks++;
                 }
             }
+            links.add(link);
         }
+
     }
 
     public String[][] getLinksData() {
