@@ -5,7 +5,6 @@
  */
 package hyperlink.integrity.checker;
 
-import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -17,7 +16,6 @@ public class LinkCheckerTwoThreads {
 
     private String rootUrl;
     private int threshold;
-    private ArrayList<Link> links = new ArrayList<>();
 
     public LinkCheckerTwoThreads(String url, int threshold) {
         this.rootUrl = url;
@@ -40,22 +38,21 @@ public class LinkCheckerTwoThreads {
             int depth = 0;
             String relHref = anchorTag.attr("href"); // == "/"
             String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
-            String linkText = anchorTag.text();
-            Link link = new Link(relHref, absHref, linkText);
 
             // if the extracted link is the same as the domain or it starts with # skip them
             if (!relHref.startsWith("#") && !absHref.equals(url)) {
                 Threading threading = new Threading(url);
                 threading.start();
-                int code = Utils.getResCode(absHref);
-                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
-                link.setStatusCode(code);
+                try {
+                    threading.join();
+                    if (threading.isValid() && threshold == 1) {
+                        checkSubLinks(absHref, depth);
+                    }
+                } catch (InterruptedException ex) {
 
-                if (link.isValid() && threshold == 1) {
-                    checkSubLinks(absHref, depth);
                 }
+
             }
-            links.add(link);
         }
 
     }
@@ -70,27 +67,25 @@ public class LinkCheckerTwoThreads {
             return;
         }
         for (Element anchorTag : anchorTags) {
-            String relHref = anchorTag.attr("href"); // == "/"
+            String relHref = anchorTag.attr("href");
             String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
-            String linkText = anchorTag.text();
-            Link link = new Link(relHref, absHref, linkText);
 
             // if the extracted link is the same as the domain or it starts # skip them
             if (!relHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
-                int code = Utils.getResCode(absHref);
-                link.setStatusCode(code);
-                System.out.println("Code " + code + " " + "Depth in. " + depth + " " + absHref);
-                if (link.isValid()) {
-                    checkSubLinks(absHref, depth + 1);
+                Threading threading = new Threading(url);
+                threading.start();
+                try {
+                    threading.join();
+
+                    if (threading.isValid()) {
+                        checkSubLinks(absHref, depth + 1);
+                    }
+                } catch (InterruptedException ex) {
+
                 }
+
             }
-            links.add(link);
         }
 
     }
-
-    public String[][] getLinksData() {
-        return Utils.linksToArray(links);
-    }
-
 }

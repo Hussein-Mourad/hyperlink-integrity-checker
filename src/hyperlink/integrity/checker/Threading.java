@@ -22,7 +22,7 @@ public class Threading extends Thread {
         return url;
     }
 
-    public boolean getResult() {
+    public boolean isValid() {
         return result;
     }
 
