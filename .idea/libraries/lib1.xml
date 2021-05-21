@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/lib/jsoup-1.13.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jfreechart-1.5.2.zip!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jsoup-1.13.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

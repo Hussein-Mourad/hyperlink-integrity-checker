@@ -45,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame {
         thresholdTextField = new javax.swing.JTextField();
         thresholdLabel = new javax.swing.JLabel();
         thresholdErrorMessage = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         tablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
@@ -88,6 +89,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         errorMessageLabel.setForeground(new java.awt.Color(239, 68, 68));
 
+        thresholdTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                thresholdTextFieldActionPerformed(evt);
+            }
+        });
         thresholdTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 thresholdTextFieldKeyReleased(evt);
@@ -99,6 +105,8 @@ public class MainFrame extends javax.swing.JFrame {
         thresholdLabel.setText("Threshold:");
 
         thresholdErrorMessage.setForeground(new java.awt.Color(238, 68, 68));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
@@ -120,7 +128,11 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(thresholdTextField)
                                 .addComponent(thresholdErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(256, 256, 256)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(306, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +153,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(thresholdErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(128, 128, 128))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(148, 148, 148))
         );
 
         cardPanel.add(homePanel, "card2");
@@ -287,6 +301,10 @@ public class MainFrame extends javax.swing.JFrame {
         revalidate();
     }//GEN-LAST:event_loadingPanelComponentShown
 
+    private void thresholdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thresholdTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_thresholdTextFieldActionPerformed
+
     private void checkInputs() {
         url = urlTextField.getText();
         String th = thresholdTextField.getText();
@@ -305,8 +323,8 @@ public class MainFrame extends javax.swing.JFrame {
         if (!th.isEmpty()) {
             if (!Helpers.isNumeric(th)) {
                 thresholdErrorMessage.setText("Threshold must be a number");
-            } else if (Integer.valueOf(th) < 0 || Integer.valueOf(th) > 10) {
-                thresholdErrorMessage.setText("Thershold must be between 0 and 10");
+            } else if (Integer.valueOf(th) < 0 || Integer.valueOf(th) > 2) {
+                thresholdErrorMessage.setText("Thershold must be between 0 and 2");
             } else {
                 threshold = Integer.valueOf(th);
                 thCheck = true;
@@ -352,6 +370,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton checkButton;
     private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JPanel homePanel;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

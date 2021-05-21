@@ -35,8 +35,8 @@ public class LinkIntegrityChecker {
 //            System.out.println("Invalid rootUrl");
 //            Logger.getLogger(LinkIntegrityChecker.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-//        System.out.println(Thread.activeCount());
-//        System.out.println(Runtime.getRuntime().availableProcessors());
+        System.out.println(Thread.activeCount());
+        System.out.println(Runtime.getRuntime().availableProcessors());
         checkRootUrl(rootUrl);
     }
 

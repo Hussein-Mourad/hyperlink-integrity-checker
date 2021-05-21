@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="hyperlink-integrity-checker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/hyperlink-integrity-checker.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
