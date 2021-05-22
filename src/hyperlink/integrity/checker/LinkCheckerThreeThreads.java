@@ -33,6 +33,10 @@ public class LinkCheckerThreeThreads {
         if (anchorTags == null) {
             return;
         }
+        if (anchorTags.size() < 3) {
+            new LinkCheckerTwoThreads(url, threshold).start();
+            return;
+        }
         for (int i = 0; i <= anchorTags.size() / 3; i += 3) {
             Element anchorTag1 = anchorTags.get(i);
             Element anchorTag2 = anchorTags.get(i + 1);
@@ -70,10 +74,13 @@ public class LinkCheckerThreeThreads {
                         checkSubLinks(absHref3, depth);
                     }
                 }
+                System.out.println(absHref1);
+                System.out.println(absHref2);
+                System.out.println(absHref3);
+                ;
             } catch (InterruptedException ex) {
             }
         }
-
     }
 
     private void checkSubLinks(String url, int depth) {
@@ -84,35 +91,52 @@ public class LinkCheckerThreeThreads {
         if (anchorTags == null) {
             return;
         }
-
-        for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
+        if (anchorTags.size() < 3) {
+            new LinkCheckerTwoThreads(url, threshold).start();
+            return;
+        }
+        for (int i = 0; i <= anchorTags.size() / 3; i += 3) {
             Element anchorTag1 = anchorTags.get(i);
             Element anchorTag2 = anchorTags.get(i + 1);
+            Element anchorTag3 = anchorTags.get(i + 2);
 
             String relHref1 = anchorTag1.attr("href"); // == "/"
             String absHref1 = anchorTag1.absUrl("href");
             String relHref2 = anchorTag2.attr("href"); // == "/"
             String absHref2 = anchorTag2.absUrl("href");
+            String relHref3 = anchorTag3.attr("href"); // == "/"
+            String absHref3 = anchorTag3.absUrl("href");
 
             Threading thread1 = new Threading(absHref1);
             thread1.start();
             Threading thread2 = new Threading(absHref2);
-            thread1.start();
+            thread2.start();
+            Threading thread3 = new Threading(absHref3);
+            thread3.start();
             try {
                 thread1.join();
-                if (!relHref1.startsWith("#") && !absHref1.equals(url)) {
+                if (!relHref1.startsWith("#") && !absHref1.equals(rootUrl) && !absHref1.equals(url)) {
                     if (thread1.isValid() && threshold != 0) {
                         checkSubLinks(absHref1, depth + 1);
                     }
                 }
                 thread2.join();
-                if (!relHref2.startsWith("#") && !absHref2.equals(url)) {
+                if (!relHref2.startsWith("#") && !absHref2.equals(rootUrl) && !absHref2.equals(url)) {
                     if (thread2.isValid() && threshold != 1) {
-                        checkSubLinks(absHref2, depth + 1);
+                        checkSubLinks(absHref2, depth + 2);
                     }
                 }
-            } catch (InterruptedException ex) {
+                thread3.join();
+                if (!relHref3.startsWith("#") && !absHref3.equals(rootUrl) && !absHref3.equals(url)) {
+                    if (thread3.isValid() && threshold != 1) {
+                        checkSubLinks(absHref3, depth + 3);
+                    }
+                }
+                System.out.println(absHref1);
+                System.out.println(absHref2);
+                System.out.println(absHref3);
 
+            } catch (InterruptedException ex) {
             }
         }
     }

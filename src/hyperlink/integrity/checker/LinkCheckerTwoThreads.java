@@ -33,6 +33,10 @@ public class LinkCheckerTwoThreads {
         if (anchorTags == null) {
             return;
         }
+        if (anchorTags.size() < 2) {
+            new LinkCheckerOneThread(url, threshold).start();
+            return;
+        }
         for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
             Element anchorTag1 = anchorTags.get(i);
             Element anchorTag2 = anchorTags.get(i + 1);
@@ -59,6 +63,8 @@ public class LinkCheckerTwoThreads {
                         checkSubLinks(absHref2, depth);
                     }
                 }
+                System.out.println(absHref1);
+                System.out.println(absHref2);
             } catch (InterruptedException ex) {
             }
 
@@ -72,6 +78,11 @@ public class LinkCheckerTwoThreads {
         }
         Elements anchorTags = Utils.getAnchorTags(url);
         if (anchorTags == null) {
+            return;
+        }
+
+        if (anchorTags.size() < 2) {
+            new LinkCheckerOneThread(url, threshold).start();
             return;
         }
 
@@ -90,17 +101,19 @@ public class LinkCheckerTwoThreads {
             thread1.start();
             try {
                 thread1.join();
-                if (!relHref1.startsWith("#") && !absHref1.equals(url)) {
+                if (!relHref1.startsWith("#") && !absHref1.equals(rootUrl) && !absHref1.equals(url)) {
                     if (thread1.isValid() && threshold != 0) {
                         checkSubLinks(absHref1, depth + 1);
                     }
                 }
                 thread2.join();
-                if (!relHref2.startsWith("#") && !absHref2.equals(url)) {
+                if (!relHref2.startsWith("#") && !absHref2.equals(rootUrl) && !absHref2.equals(url)) {
                     if (thread2.isValid() && threshold != 1) {
                         checkSubLinks(absHref2, depth + 1);
                     }
                 }
+                System.out.println(absHref1);
+                System.out.println(absHref2);
             } catch (InterruptedException ex) {
             }
         }
