@@ -33,11 +33,22 @@ public class LinkCheckerTwoThreads {
         if (anchorTags == null) {
             return;
         }
-        if (anchorTags.size() < 2) {
-            new LinkCheckerOneThread(url, threshold).start();
-            return;
+        if (anchorTags.size() == 1) {
+            Element anchorTag = anchorTags.get(0);
+            int depth = 0;
+            String relHref = anchorTag.attr("href");
+            String absHref = anchorTag.absUrl("href");
+
+            if (!relHref.startsWith("#") && !absHref.equals(url)) {
+                int code = Utils.getResCode(absHref);
+
+                if (code == 200 && threshold != 0) {
+                    checkSubLinks(absHref, depth);
+                }
+            }
         }
-        for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
+
+        for (int i = 0; i <= anchorTags.size() / 2 && anchorTags.size() >= 2; i += 2) {
             Element anchorTag1 = anchorTags.get(i);
             Element anchorTag2 = anchorTags.get(i + 1);
             int depth = 0;
@@ -81,12 +92,21 @@ public class LinkCheckerTwoThreads {
             return;
         }
 
-        if (anchorTags.size() < 2) {
-            new LinkCheckerOneThread(url, threshold).start();
-            return;
+        if (anchorTags.size() == 1) {
+            Element anchorTag = anchorTags.get(0);
+            String relHref = anchorTag.attr("href");
+            String absHref = anchorTag.absUrl("href");
+
+            if (!relHref.startsWith("#") && !absHref.equals(url)) {
+                int code = Utils.getResCode(absHref);
+
+                if (code == 200 && threshold != 0) {
+                    checkSubLinks(absHref, depth + 1);
+                }
+            }
         }
 
-        for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
+        for (int i = 0; i <= anchorTags.size() / 2 && anchorTags.size() >= 2; i += 2) {
             Element anchorTag1 = anchorTags.get(i);
             Element anchorTag2 = anchorTags.get(i + 1);
 

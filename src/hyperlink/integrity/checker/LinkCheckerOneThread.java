@@ -66,7 +66,6 @@ public class LinkCheckerOneThread {
                 } else {
                     numberOfInvalidLinks++;
                 }
-
             }
             links.add(link);
         }
