@@ -35,7 +35,8 @@ public class LinkCheckerFourThreads {
             return;
         }
         if (anchorTags.size() < 4) {
-            new LinkCheckerThreeThreads(url, threshold).start();
+            String start = new LinkCheckerThreeThreads(url, threshold).start();
+            System.out.println(start);
             return;
         }
         for (int i = 0; i <= anchorTags.size() / 4; i += 4) {
@@ -64,30 +65,33 @@ public class LinkCheckerFourThreads {
 
             try {
                 thread1.join();
+                thread2.join();
+                thread3.join();
+                thread4.join();
                 if (!relHref1.startsWith("#") && !absHref1.equals(url)) {
                     if (thread1.isValid() && threshold != 0) {
                         checkSubLinks(absHref1, depth);
                     }
                 }
-                thread2.join();
+
                 if (!relHref2.startsWith("#") && !absHref2.equals(url)) {
                     if (thread2.isValid() && threshold != 1) {
                         checkSubLinks(absHref2, depth);
                     }
                 }
-                thread3.join();
+
                 if (!relHref3.startsWith("#") && !absHref3.equals(url)) {
                     if (thread3.isValid() && threshold != 1) {
                         checkSubLinks(absHref3, depth);
                     }
                 }
-                thread4.join();
+
                 if (!relHref4.startsWith("#") && !absHref4.equals(url)) {
                     if (thread3.isValid() && threshold != 1) {
                         checkSubLinks(absHref4, depth);
                     }
                 }
-                System.out.println(absHref1);
+                System.out.println("four" + absHref1);
                 System.out.println(absHref2);
                 System.out.println(absHref3);
                 System.out.println(absHref4);
@@ -139,24 +143,24 @@ public class LinkCheckerFourThreads {
 
             try {
                 thread1.join();
+                thread2.join();
+                thread3.join();
+                thread4.join();
                 if (!relHref1.startsWith("#") && !absHref1.equals(url)) {
                     if (thread1.isValid() && threshold != 0) {
                         checkSubLinks(absHref1, depth + 1);
                     }
                 }
-                thread2.join();
                 if (!relHref2.startsWith("#") && !absHref2.equals(url)) {
                     if (thread2.isValid() && threshold != 1) {
                         checkSubLinks(absHref2, depth + 1);
                     }
                 }
-                thread3.join();
                 if (!relHref3.startsWith("#") && !absHref3.equals(url)) {
                     if (thread3.isValid() && threshold != 1) {
                         checkSubLinks(absHref3, depth + 1);
                     }
                 }
-                thread4.join();
                 if (!relHref4.startsWith("#") && !absHref4.equals(url)) {
                     if (thread3.isValid() && threshold != 1) {
                         checkSubLinks(absHref4, depth + 1);
