@@ -91,8 +91,9 @@ public class LinkCheckerThreeThreads {
         if (anchorTags == null) {
             return;
         }
+//        TODO FIX THIS
         if (anchorTags.size() < 3) {
-            new LinkCheckerTwoThreads(url, threshold).start();
+            new LinkCheckerTwoThreads(url, depth).start();
             return;
         }
         for (int i = 0; i <= anchorTags.size() / 3; i += 3) {

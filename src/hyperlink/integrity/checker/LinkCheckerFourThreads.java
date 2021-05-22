@@ -113,8 +113,9 @@ public class LinkCheckerFourThreads {
         if (anchorTags == null) {
             return;
         }
+//        todo fix problems when there less than 4 links
         if (anchorTags.size() < 4) {
-            new LinkCheckerThreeThreads(url, threshold).start();
+            new LinkCheckerThreeThreads(url, depth).start();
             return;
         }
         for (int i = 0; i <= anchorTags.size() / 4; i += 4) {
