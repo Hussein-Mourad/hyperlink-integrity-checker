@@ -78,7 +78,6 @@ public class Utils {
             duration /= 60;
             str = String.format("%.2f", duration) + " m";
         }
-        System.out.println("One Thread elapsed time: " + str);
 
         return str;
     }

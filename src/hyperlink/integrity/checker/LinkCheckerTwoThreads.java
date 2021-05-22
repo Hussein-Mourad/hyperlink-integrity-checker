@@ -20,7 +20,6 @@ public class LinkCheckerTwoThreads {
     public LinkCheckerTwoThreads(String url, int threshold) {
         this.rootUrl = url;
         this.threshold = threshold;
-
     }
 
     public String start() {
@@ -41,17 +40,16 @@ public class LinkCheckerTwoThreads {
 
             // if the extracted link is the same as the domain or it starts with # skip them
             if (!relHref.startsWith("#") && !absHref.equals(url)) {
-                Threading threading = new Threading(url);
+                Threading threading = new Threading(absHref);
                 threading.start();
                 try {
                     threading.join();
-                    if (threading.isValid() && threshold == 1) {
+                    if (threading.isValid() && threshold != 0) {
                         checkSubLinks(absHref, depth);
                     }
                 } catch (InterruptedException ex) {
 
                 }
-
             }
         }
 
@@ -72,7 +70,7 @@ public class LinkCheckerTwoThreads {
 
             // if the extracted link is the same as the domain or it starts # skip them
             if (!relHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
-                Threading threading = new Threading(url);
+                Threading threading = new Threading(absHref);
                 threading.start();
                 try {
                     threading.join();

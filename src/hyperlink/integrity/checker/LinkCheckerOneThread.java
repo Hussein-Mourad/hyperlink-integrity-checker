@@ -24,7 +24,6 @@ public class LinkCheckerOneThread {
     public LinkCheckerOneThread(String url, int threshold) {
         this.rootUrl = url;
         this.threshold = threshold;
-
     }
 
     public int getNumberOfValidLinks() {

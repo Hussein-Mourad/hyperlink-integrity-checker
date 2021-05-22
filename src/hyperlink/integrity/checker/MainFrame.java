@@ -258,14 +258,11 @@ public class MainFrame extends javax.swing.JFrame {
         loadingPanelLayout.setHorizontalGroup(
             loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loadingPanelLayout.createSequentialGroup()
-                .addGroup(loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(loadingPanelLayout.createSequentialGroup()
-                        .addGap(244, 244, 244)
-                        .addComponent(jLabel1))
-                    .addGroup(loadingPanelLayout.createSequentialGroup()
-                        .addGap(216, 216, 216)
-                        .addComponent(jLabel2)))
-                .addContainerGap(270, Short.MAX_VALUE))
+                .addGap(244, 244, 244)
+                .addGroup(loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         loadingPanelLayout.setVerticalGroup(
             loadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,7 +521,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void viewStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStatsButtonActionPerformed
         cardPanel.removeAll();
         cardPanel.add(statsPanel);
-//        setSize(new java.awt.Dimension(640, 383));
+        setSize(new java.awt.Dimension(650, 480));
         this.setResizable(false);
         repaint();
         revalidate();
