@@ -35,7 +35,7 @@ public class LinkCheckerFourThreads {
             return;
         }
         if (anchorTags.size() < 4) {
-            new LinkCheckerOneThread(url, threshold).start();
+            new LinkCheckerThreeThreads(url, threshold).start();
             return;
         }
         for (int i = 0; i <= anchorTags.size() / 4; i += 4) {
@@ -110,7 +110,7 @@ public class LinkCheckerFourThreads {
             return;
         }
         if (anchorTags.size() < 4) {
-            new LinkCheckerOneThread(url, threshold).start();
+            new LinkCheckerThreeThreads(url, threshold).start();
             return;
         }
         for (int i = 0; i <= anchorTags.size() / 4; i += 4) {
