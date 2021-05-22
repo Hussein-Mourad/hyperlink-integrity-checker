@@ -33,24 +33,35 @@ public class LinkCheckerTwoThreads {
         if (anchorTags == null) {
             return;
         }
-        for (Element anchorTag : anchorTags) {
+        for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
+            Element anchorTag1 = anchorTags.get(i);
+            Element anchorTag2 = anchorTags.get(i + 1);
             int depth = 0;
-            String relHref = anchorTag.attr("href"); // == "/"
-            String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
+            String relHref1 = anchorTag1.attr("href"); // == "/"
+            String absHref1 = anchorTag1.absUrl("href");
+            String relHref2 = anchorTag2.attr("href"); // == "/"
+            String absHref2 = anchorTag2.absUrl("href");
 
-            // if the extracted link is the same as the domain or it starts with # skip them
-            if (!relHref.startsWith("#") && !absHref.equals(url)) {
-                Threading threading = new Threading(absHref);
-                threading.start();
-                try {
-                    threading.join();
-                    if (threading.isValid() && threshold != 0) {
-                        checkSubLinks(absHref, depth);
+            Threading thread1 = new Threading(absHref1);
+            thread1.start();
+            Threading thread2 = new Threading(absHref2);
+            thread2.start();
+            try {
+                thread1.join();
+                if (!relHref1.startsWith("#") && !absHref1.equals(url)) {
+                    if (thread1.isValid() && threshold != 0) {
+                        checkSubLinks(absHref1, depth);
                     }
-                } catch (InterruptedException ex) {
-
                 }
+                thread2.join();
+                if (!relHref2.startsWith("#") && !absHref2.equals(url)) {
+                    if (thread2.isValid() && threshold != 1) {
+                        checkSubLinks(absHref2, depth);
+                    }
+                }
+            } catch (InterruptedException ex) {
             }
+
         }
 
     }
@@ -59,31 +70,39 @@ public class LinkCheckerTwoThreads {
         if (depth == threshold) {
             return;
         }
-
         Elements anchorTags = Utils.getAnchorTags(url);
         if (anchorTags == null) {
             return;
         }
-        for (Element anchorTag : anchorTags) {
-            String relHref = anchorTag.attr("href");
-            String absHref = anchorTag.absUrl("href"); // == "http://jsoup.org/"
 
-            // if the extracted link is the same as the domain or it starts # skip them
-            if (!relHref.startsWith("#") && !absHref.equals(rootUrl) && !absHref.equals(url)) {
-                Threading threading = new Threading(absHref);
-                threading.start();
-                try {
-                    threading.join();
+        for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
+            Element anchorTag1 = anchorTags.get(i);
+            Element anchorTag2 = anchorTags.get(i + 1);
 
-                    if (threading.isValid()) {
-                        checkSubLinks(absHref, depth + 1);
+            String relHref1 = anchorTag1.attr("href"); // == "/"
+            String absHref1 = anchorTag1.absUrl("href");
+            String relHref2 = anchorTag2.attr("href"); // == "/"
+            String absHref2 = anchorTag2.absUrl("href");
+
+            Threading thread1 = new Threading(absHref1);
+            thread1.start();
+            Threading thread2 = new Threading(absHref2);
+            thread1.start();
+            try {
+                thread1.join();
+                if (!relHref1.startsWith("#") && !absHref1.equals(url)) {
+                    if (thread1.isValid() && threshold != 0) {
+                        checkSubLinks(absHref1, depth + 1);
                     }
-                } catch (InterruptedException ex) {
-
                 }
-
+                thread2.join();
+                if (!relHref2.startsWith("#") && !absHref2.equals(url)) {
+                    if (thread2.isValid() && threshold != 1) {
+                        checkSubLinks(absHref2, depth + 1);
+                    }
+                }
+            } catch (InterruptedException ex) {
             }
         }
-
     }
 }

@@ -33,18 +33,24 @@ public class LinkCheckerFourThreads {
         if (anchorTags == null) {
             return;
         }
-        for (int i = 0; i <= anchorTags.size() / 2; i += 2) {
+        for (int i = 0; i <= anchorTags.size() / 3; i += 3) {
             Element anchorTag1 = anchorTags.get(i);
             Element anchorTag2 = anchorTags.get(i + 1);
+            Element anchorTag3 = anchorTags.get(i + 2);
+
             int depth = 0;
-            String relHref1 = anchorTag1.attr("href"); // == "/"
+            String relHref1 = anchorTag1.attr("href");
             String absHref1 = anchorTag1.absUrl("href");
-            String relHref2 = anchorTag2.attr("href"); // == "/"
+            String relHref2 = anchorTag2.attr("href");
             String absHref2 = anchorTag2.absUrl("href");
+            String relHref3 = anchorTag3.attr("href");
+            String absHref3 = anchorTag3.absUrl("href");
 
             Threading thread1 = new Threading(absHref1);
             thread1.start();
             Threading thread2 = new Threading(absHref2);
+            thread1.start();
+            Threading thread3 = new Threading(absHref2);
             thread1.start();
             try {
                 thread1.join();
